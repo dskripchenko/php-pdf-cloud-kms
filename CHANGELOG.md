@@ -4,7 +4,7 @@ All notable changes to `dskripchenko/php-pdf-cloud-kms` are documented in this f
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/);
 versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.0.0] — 2026-10-18
 
 ### Added
 - `AwsKmsSigner` — a php-pdf `Signer` for an asymmetric AWS KMS key (RSA,
