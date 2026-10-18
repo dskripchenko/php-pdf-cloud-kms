@@ -1,0 +1,13 @@
+# AWS KMS emulated by moto, and PHP to sign against it.
+#   docker compose -f docker/compose.yml run --rm php bash docker/smoke/run.sh
+services:
+  kms:
+    image: motoserver/moto:5.2.4
+  php:
+    build: .
+    volumes:
+      - ..:/app
+    environment:
+      KMS_ENDPOINT: http://kms:5000
+    depends_on:
+      - kms

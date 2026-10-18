@@ -1,0 +1,47 @@
+{
+    "name": "dskripchenko/php-pdf-cloud-kms",
+    "description": "Cloud KMS signers for dskripchenko/php-pdf: sign PDFs (PAdES, RSA and ECDSA) with keys held by AWS KMS, Google Cloud KMS or Azure Key Vault — the key never leaves the cloud.",
+    "type": "library",
+    "license": "MIT",
+    "keywords": ["pdf", "signature", "pades", "kms", "aws-kms", "google-cloud-kms", "azure-key-vault", "hsm", "php-pdf"],
+    "homepage": "https://github.com/dskripchenko/php-pdf-cloud-kms",
+    "authors": [
+        {
+            "name": "Denis Skripchenko",
+            "email": "denskrp90@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "ext-json": "*",
+        "ext-openssl": "*",
+        "dskripchenko/php-pdf": "^1.19"
+    },
+    "require-dev": {
+        "aws/aws-sdk-php": "^3.300",
+        "phpstan/phpstan": "^2.0",
+        "phpunit/phpunit": "^11.5"
+    },
+    "suggest": {
+        "aws/aws-sdk-php": "Required for AwsKmsSigner"
+    },
+    "autoload": {
+        "psr-4": {
+            "Dskripchenko\\PhpPdfCloudKms\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Dskripchenko\\PhpPdfCloudKms\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "stan": "phpstan analyse"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
