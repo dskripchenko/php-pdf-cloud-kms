@@ -96,6 +96,14 @@ $signer = new AzureKeyVaultSigner('https://my-vault.vault.azure.net/keys/pdf/012
 消息会解释常见情况——缺少权限或角色、密钥未知或已禁用、令牌过期、哈希与
 密钥不匹配。
 
+## 要求
+
+- **PHP 8.2+**，需要 `ext-openssl` 和 `ext-json`，以及 `dskripchenko/php-pdf`
+  1.19 或更高版本（由 Composer 安装）。
+- **`aws/aws-sdk-php`**，仅 `AwsKmsSigner` 需要。Google Cloud KMS 和 Azure
+  Key Vault 无需 SDK：其 REST API 通过 php-pdf 的 HTTP 传输调用。
+- 能向服务（以及令牌端点）发起出站 HTTPS 连接。
+
 ## 验证方式
 
 - **AWS KMS**——在 Docker 中针对 moto（AWS 模拟器）实际运行：在模拟器中创建
@@ -107,6 +115,17 @@ $signer = new AzureKeyVaultSigner('https://my-vault.vault.azure.net/keys/pdf/012
 - **Google Cloud KMS 和 Azure Key Vault** 没有模拟器。签名者针对其 REST API
   的仿冒实现进行测试，这些仿冒实现使用真实密钥签名——覆盖请求格式、响应解码
   （Google 为 DER，Azure 为 `r ‖ s`）、错误和令牌——而不是针对真实服务。
+
+## php-pdf 系列
+
+| 包 | 提供的功能 |
+|---|---|
+| [php-pdf](https://github.com/dskripchenko/php-pdf) | 核心：用 HTML 加 CSS 或构建器生成 PDF，读取、合并、填写表单、签名和验证。 |
+| [laravel-php-pdf](https://github.com/dskripchenko/laravel-php-pdf) | Laravel 桥接：Blade 视图直接生成 PDF、`response()->pdf()`、按配置签名。 |
+| [php-pdf-fonts-liberation](https://github.com/dskripchenko/php-pdf-fonts-liberation) | Liberation Sans、Serif 和 Mono，与 Arial、Times New Roman 和 Courier New 度量兼容（OFL 许可，独立于 MIT 核心之外）。 |
+| [php-pdf-cryptopro](https://github.com/dskripchenko/php-pdf-cryptopro) | 使用服务器上 CryptoPro CSP 中的密钥签名：GOST R 34.10-2012，俄罗斯合格电子签名。 |
+| [php-pdf-pkcs11](https://github.com/dskripchenko/php-pdf-pkcs11) | 通过 PKCS#11 使用 HSM、智能卡或 USB 令牌上的密钥签名。 |
+| **php-pdf-cloud-kms**（本包） | 使用 AWS KMS、Google Cloud KMS 或 Azure Key Vault 中的密钥签名。 |
 
 ## 许可证
 

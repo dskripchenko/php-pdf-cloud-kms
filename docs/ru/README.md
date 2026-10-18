@@ -102,6 +102,15 @@ $signer = new AzureKeyVaultSigner('https://my-vault.vault.azure.net/keys/pdf/012
 сообщение объясняет частые случаи — недостающее право или роль, неизвестный
 или отключённый ключ, истёкший токен, хэш, не подходящий к ключу.
 
+## Требования
+
+- **PHP 8.2+** с `ext-openssl` и `ext-json` и `dskripchenko/php-pdf`
+  1.19 или новее (Composer установит его сам).
+- **`aws/aws-sdk-php`** — только для `AwsKmsSigner`. Google Cloud KMS и Azure
+  Key Vault SDK не нужен: их REST API вызываются через HTTP-транспорт
+  php-pdf.
+- Исходящий HTTPS до сервиса (и до эндпоинта токенов).
+
 ## Как это проверено
 
 - **AWS KMS** — вживую против moto (эмулятора AWS) в Docker: ключи
@@ -115,6 +124,17 @@ $signer = new AzureKeyVaultSigner('https://my-vault.vault.azure.net/keys/pdf/012
   проверены на подделках их REST API, подписывающих настоящими ключами, —
   формат запроса, разбор ответа (DER у Google, `r ‖ s` у Azure), ошибки и
   токены, — а не на живых сервисах.
+
+## Семейство php-pdf
+
+| Пакет | Что добавляет |
+|---|---|
+| [php-pdf](https://github.com/dskripchenko/php-pdf) | Ядро: HTML с CSS или билдер в PDF, чтение, слияние, заполнение форм, подпись и проверка. |
+| [laravel-php-pdf](https://github.com/dskripchenko/laravel-php-pdf) | Мост для Laravel: Blade-шаблон сразу в PDF, `response()->pdf()`, подпись из конфига. |
+| [php-pdf-fonts-liberation](https://github.com/dskripchenko/php-pdf-fonts-liberation) | Liberation Sans, Serif и Mono, метрически совместимые с Arial, Times New Roman и Courier New (OFL, вынесены из MIT-ядра). |
+| [php-pdf-cryptopro](https://github.com/dskripchenko/php-pdf-cryptopro) | Подпись ключом в КриптоПро CSP на сервере: ГОСТ Р 34.10-2012, российская квалифицированная подпись. |
+| [php-pdf-pkcs11](https://github.com/dskripchenko/php-pdf-pkcs11) | Подпись ключом на HSM, смарт-карте или USB-токене через PKCS#11. |
+| **php-pdf-cloud-kms** (этот пакет) | Подпись ключом в AWS KMS, Google Cloud KMS или Azure Key Vault. |
 
 ## Лицензия
 
