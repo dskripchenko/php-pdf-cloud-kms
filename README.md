@@ -109,6 +109,15 @@ the message explains the common ones — the missing permission or role, an
 unknown or disabled key, an expired token, a digest that does not match the
 key.
 
+## Requirements
+
+- **PHP 8.2+** with `ext-openssl` and `ext-json`, and `dskripchenko/php-pdf`
+  1.19 or later (Composer installs it).
+- **`aws/aws-sdk-php`** for `AwsKmsSigner` only. Google Cloud KMS and Azure
+  Key Vault need no SDK: their REST APIs are called through php-pdf's HTTP
+  transport.
+- Outbound HTTPS to the service (and to the token endpoint).
+
 ## How it was checked
 
 - **AWS KMS** — live against moto (an AWS emulator) in Docker: RSA-2048,
@@ -122,6 +131,17 @@ key.
   are tested against fakes of their REST APIs that sign with real keys —
   the request format, the response decoding (DER for Google, `r ‖ s` for
   Azure), the errors and the tokens — not against the live services.
+
+## The php-pdf family
+
+| Package | What it adds |
+|---|---|
+| [php-pdf](https://github.com/dskripchenko/php-pdf) | The core: HTML with CSS or a builder to PDF, read, merge, fill forms, sign and validate. |
+| [laravel-php-pdf](https://github.com/dskripchenko/laravel-php-pdf) | Laravel bridge: a Blade view straight to PDF, `response()->pdf()`, signing from config. |
+| [php-pdf-fonts-liberation](https://github.com/dskripchenko/php-pdf-fonts-liberation) | Liberation Sans, Serif and Mono, metric-compatible with Arial, Times New Roman and Courier New (OFL, kept out of the MIT core). |
+| [php-pdf-cryptopro](https://github.com/dskripchenko/php-pdf-cryptopro) | Signs with a key in CryptoPro CSP on the server: GOST R 34.10-2012, Russian qualified signatures. |
+| [php-pdf-pkcs11](https://github.com/dskripchenko/php-pdf-pkcs11) | Signs with a key on an HSM, a smart card or a USB token, through PKCS#11. |
+| **php-pdf-cloud-kms** (this package) | Signs with a key in AWS KMS, Google Cloud KMS or Azure Key Vault. |
 
 ## License
 

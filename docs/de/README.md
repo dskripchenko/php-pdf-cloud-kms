@@ -109,6 +109,15 @@ Fehlercode des Dienstes `$errorCode` (`AccessDeniedException`,
 Fälle — fehlende Berechtigung oder Rolle, unbekannter oder deaktivierter
 Schlüssel, abgelaufenes Token, ein Hash, der nicht zum Schlüssel passt.
 
+## Voraussetzungen
+
+- **PHP 8.2+** mit `ext-openssl` und `ext-json` sowie `dskripchenko/php-pdf`
+  1.19 oder neuer (Composer installiert es).
+- **`aws/aws-sdk-php`** nur für `AwsKmsSigner`. Google Cloud KMS und Azure
+  Key Vault brauchen kein SDK: Ihre REST-APIs werden über den
+  HTTP-Transport von php-pdf aufgerufen.
+- Ausgehendes HTTPS zum Dienst (und zum Token-Endpunkt).
+
 ## Wie es geprüft wurde
 
 - **AWS KMS** — live gegen moto (einen AWS-Emulator) in Docker: RSA-2048-,
@@ -124,6 +133,17 @@ Schlüssel, abgelaufenes Token, ein Hash, der nicht zum Schlüssel passt.
   Schlüsseln signieren — Anfrageformat, Dekodierung der Antwort (DER bei
   Google, `r ‖ s` bei Azure), Fehler und Tokens —, nicht gegen die echten
   Dienste.
+
+## Die php-pdf-Familie
+
+| Paket | Was es hinzufügt |
+|---|---|
+| [php-pdf](https://github.com/dskripchenko/php-pdf) | Der Kern: HTML mit CSS oder ein Builder zu PDF, lesen, zusammenführen, Formulare ausfüllen, signieren und validieren. |
+| [laravel-php-pdf](https://github.com/dskripchenko/laravel-php-pdf) | Laravel-Brücke: eine Blade-View direkt als PDF, `response()->pdf()`, Signieren aus der Konfiguration. |
+| [php-pdf-fonts-liberation](https://github.com/dskripchenko/php-pdf-fonts-liberation) | Liberation Sans, Serif und Mono, metrisch kompatibel zu Arial, Times New Roman und Courier New (OFL, aus dem MIT-Kern herausgehalten). |
+| [php-pdf-cryptopro](https://github.com/dskripchenko/php-pdf-cryptopro) | Signiert mit einem Schlüssel in CryptoPro CSP auf dem Server: GOST R 34.10-2012, russische qualifizierte Signaturen. |
+| [php-pdf-pkcs11](https://github.com/dskripchenko/php-pdf-pkcs11) | Signiert mit einem Schlüssel auf einem HSM, einer Smartcard oder einem USB-Token über PKCS#11. |
+| **php-pdf-cloud-kms** (dieses Paket) | Signiert mit einem Schlüssel in AWS KMS, Google Cloud KMS oder Azure Key Vault. |
 
 ## Lizenz
 
